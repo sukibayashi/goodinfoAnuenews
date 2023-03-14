@@ -1,0 +1,53 @@
+// common use script for all front end team's projects
+
+function getSyncScriptParams() {
+  var env, project;
+  if (document.getElementById('anueCommon')) {
+    var script = document.getElementById('anueCommon');
+    project = script.getAttribute('data-project');
+    env = script.getAttribute('data-env');
+  } else {
+    console.error('anueCommon: please add id \'anueCommon\' to script tag');
+    var scripts = document.getElementsByTagName('script');
+    var lastScript = scripts[scripts.length - 1];
+    project = lastScript.getAttribute('data-project');
+    env = lastScript.getAttribute('data-env');
+  }
+  if (!project) {
+    console.error('anueCommon: please provide project repo name by add data-project attribute');
+  }
+  if (!env) {
+    console.error('anueCommon: please provide environment by add data-env attribute');
+  }
+  return {
+    project: project,
+    env: env
+  };
+}
+
+// https://www.alexa.com/pro/tagcoverage?sid=658833&site=cnyes.com
+function loadAlexaCertifyCode() {
+  console.log('anueCommon: loadAlexaCertifyCode');
+  _atrk_opts = {
+    atrk_acct: 'q+0ci1acVE00ie',
+    domain: 'cnyes.com',
+    dynamic: true,
+  };
+  (function() {
+    var as = document.createElement('script');
+    as.type = 'text/javascript';
+    as.async = true;
+    as.src = 'https://certify-js.alexametrics.com/atrk.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(as, s);
+  })();
+}
+
+(function load() {
+  var params = getSyncScriptParams();
+  console.log('anueCommon: loading...', params);
+
+  if (params.env === 'prod') {
+    loadAlexaCertifyCode();
+  }
+})();
